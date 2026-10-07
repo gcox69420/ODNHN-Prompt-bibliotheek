@@ -1,0 +1,13 @@
+{
+  "name": "promptbibliotheek-odnhn",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Promptbibliotheek Microsoft 365 Copilot - OD NHN",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
