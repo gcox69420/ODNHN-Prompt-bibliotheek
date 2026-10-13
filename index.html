@@ -116,6 +116,7 @@ article.kaart.exp{border-top-color:var(--od-purple-2)}
 .badge.app{background:var(--od-green-tint);border-color:var(--od-green);color:var(--od-text)}
 .badge.niv{background:var(--od-purple-tint);border-color:var(--od-purple-2);color:var(--od-text)}
 .badge.lic{border-color:var(--od-purple-2);color:var(--od-purple)}
+.badge.rol{background:var(--od-surface-2)}
 .kaart h3{margin:0;font-size:15px;line-height:1.35;color:var(--od-purple)}
 .kaart .doel{margin:var(--space-2) 0 0;font-size:13px;color:var(--od-muted)}
 pre.prompt{
@@ -185,7 +186,7 @@ a:hover{color:var(--od-purple-2)}
     </ul>
   </div>
 
-  <section class="uitleg">
+<section class="uitleg">
     <h2 class="sectie">De opbouw van een prompt</h2>
     <p class="lead">Alle prompts hieronder zijn op dezelfde vijf onderdelen gebouwd. Met dit patroon schrijf je ook je eigen prompts.</p>
     <div class="recept">
@@ -205,7 +206,8 @@ a:hover{color:var(--od-purple-2)}
       <button class="chip" id="favFilter" aria-pressed="false">Alleen favorieten</button>
       <button class="chip" id="reset">Wis filters</button>
     </div>
-    <div class="chips" id="appChips"><span class="chiplabel">App</span></div>
+    <div class="chips" id="rolChips"><span class="chiplabel">Rol</span></div>
+      <div class="chips" id="appChips"><span class="chiplabel">App</span></div>
     <div class="chips" id="nivChips"><span class="chiplabel">Niveau</span></div>
     <div class="chips" id="catChips"><span class="chiplabel">Thema</span></div>
     <p class="telling" id="telling"></p>
@@ -228,7 +230,7 @@ a:hover{color:var(--od-purple-2)}
 <script>
 const PROMPTS = [
 /* ================= VERGADEREN & BESLUITEN ================= */
-{t:"MT-agenda opbouwen",app:"Copilot Chat",niv:"Basis",cat:"Vergaderen & besluiten",lic:false,
+{t:"MT-agenda opbouwen",app:"Copilot Chat",niv:"Basis",cat:"Vergaderen & besluiten",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Van een lijst losse onderwerpen naar een agenda met doel en tijd per punt.",
  p:`Je bent secretaris van een managementteam bij een omgevingsdienst. Maak van onderstaande onderwerpen een MT-agenda van [90] minuten.
 Geef per agendapunt: titel, doel (informeren / opiniëren / besluiten), benodigde tijd en de gevraagde actie van het MT.
@@ -238,7 +240,7 @@ Onderwerpen:
 [plak hier je lijst]`,
  c:"Kloppen de tijdsinschattingen? Mist er een punt dat jij belangrijk vindt?"},
 
-{t:"Vergaderverslag met besluiten en acties",app:"Teams",niv:"Basis",cat:"Vergaderen & besluiten",lic:true,
+{t:"Vergaderverslag met besluiten en acties",app:"Teams",niv:"Basis",cat:"Vergaderen & besluiten",rol:"Iedereen",lic:true,
  doel:"Besluiten en acties uit een opgenomen of getranscribeerd overleg halen.",
  p:`Vat deze vergadering samen in drie delen:
 1. Besluiten — wat is er precies besloten, letterlijk en zonder interpretatie.
@@ -247,7 +249,7 @@ Onderwerpen:
 Voeg niets toe dat niet is gezegd. Noem bij twijfel dat het onduidelijk is.`,
  c:"Leg elk besluit naast je eigen aantekeningen. Transcripties verstaan namen en cijfers regelmatig verkeerd."},
 
-{t:"Je hebt een overleg gemist",app:"Teams",niv:"Basis",cat:"Vergaderen & besluiten",lic:true,
+{t:"Je hebt een overleg gemist",app:"Teams",niv:"Basis",cat:"Vergaderen & besluiten",rol:"Iedereen",lic:true,
  doel:"Bijpraten na een overleg waar je niet bij was.",
  p:`Ik was niet bij dit overleg. Geef me in maximaal 10 regels:
 - waar het over ging,
@@ -257,7 +259,7 @@ Voeg niets toe dat niet is gezegd. Noem bij twijfel dat het onduidelijk is.`,
 Vermeld expliciet als iets niet in de vergadering is behandeld.`,
  c:"Vraag het na bij een aanwezige. De toon van een discussie staat niet in een samenvatting."},
 
-{t:"Agendapunt voor het MT voorbereiden",app:"Copilot Chat",niv:"Basis",cat:"Vergaderen & besluiten",lic:false,
+{t:"Agendapunt voor het MT voorbereiden",app:"Copilot Chat",niv:"Basis",cat:"Vergaderen & besluiten",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een opzet met kernboodschap, discussiepunten en een beslisvraag.",
  p:`Ik bereid een MT-bespreking voor over [openbaar onderwerp].
 Maak een opzet met:
@@ -268,7 +270,7 @@ Maak een opzet met:
 Houd het algemeen; gebruik geen namen van personen of bedrijven.`,
  c:"Zijn de argumenten evenwichtig? Welke organisatiekennis voeg jij toe?"},
 
-{t:"Beslisnotitie uit een discussie",app:"Word",niv:"Gevorderd",cat:"Vergaderen & besluiten",lic:true,
+{t:"Beslisnotitie uit een discussie",app:"Word",niv:"Gevorderd",cat:"Vergaderen & besluiten",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Van ruwe discussieaantekeningen naar een beslisnotitie.",
  p:`Maak van onderstaande aantekeningen een beslisnotitie met deze kopjes: aanleiding, probleemstelling, overwogen varianten, afweging per variant, voorstel, gevraagd besluit, risico's en vervolgstappen.
 Gebruik alleen informatie uit de aantekeningen. Zet [nog aanvullen] waar informatie ontbreekt in plaats van het zelf in te vullen.
@@ -277,14 +279,14 @@ Aantekeningen:
 [plak hier]`,
  c:"De plekken met [nog aanvullen] vul je zelf in."},
 
-{t:"Terugvinden wat er eerder is besloten",app:"Copilot Chat",niv:"Gevorderd",cat:"Vergaderen & besluiten",lic:true,
+{t:"Terugvinden wat er eerder is besloten",app:"Copilot Chat",niv:"Gevorderd",cat:"Vergaderen & besluiten",rol:"Iedereen",lic:true,
  doel:"Zoeken door je eigen vergaderingen, mail en documenten.",
  p:`Zoek in mijn vergaderingen, mail en documenten van de afgelopen [6] maanden naar alles over [onderwerp].
 Geef een chronologisch overzicht van: datum, bron (vergadering, mail of document), en wat er is afgesproken of besloten.
 Zet erbij waar je het vandaan hebt, zodat ik het kan nalezen. Geef aan als je niets vindt in plaats van te gokken.`,
  c:"Open minstens één bron zelf. Copilot vat samen wat het vindt en vindt niet alles."},
 
-{t:"Advocaat van de duivel op je eigen voorstel",app:"Copilot Chat",niv:"Gevorderd",cat:"Vergaderen & besluiten",lic:false,
+{t:"Advocaat van de duivel op je eigen voorstel",app:"Copilot Chat",niv:"Gevorderd",cat:"Vergaderen & besluiten",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Zwakke plekken in je voorstel vinden voordat anderen ze vinden.",
  p:`Hieronder staat mijn voorstel. Neem de rol van kritische toehoorder in een MT van een overheidsorganisatie.
 Geef:
@@ -298,7 +300,7 @@ Voorstel:
 [plak hier]`,
  c:"Weeg de tegenwerpingen zelf; de bestuurlijke context ken jij."},
 
-{t:"Besluitenlijst omzetten naar een actiematrix",app:"Excel",niv:"Gevorderd",cat:"Vergaderen & besluiten",lic:true,
+{t:"Besluitenlijst omzetten naar een actiematrix",app:"Excel",niv:"Gevorderd",cat:"Vergaderen & besluiten",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Van lopende tekst naar een overzicht met eigenaar en deadline.",
  p:`Zet onderstaande besluiten en acties om in een tabel met de kolommen: nr, actie, eigenaar (rol, geen persoonsnaam), deadline, status, afhankelijkheid.
 Sorteer op deadline. Laat velden leeg als de informatie er niet staat; vul niets zelf in.
@@ -307,14 +309,14 @@ Sorteer op deadline. Laat velden leeg als de informatie er niet staat; vul niets
  c:"Vul eigenaren en deadlines zelf aan en bevestig ze bij de betrokkenen."},
 
 /* ================= BELEID & ADVIES ================= */
-{t:"Beleidsnotitie samenvatten voor het MT",app:"Word",niv:"Basis",cat:"Beleid & advies",lic:true,
+{t:"Beleidsnotitie samenvatten voor het MT",app:"Word",niv:"Basis",cat:"Beleid & advies",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"De kern uit een lang stuk, inclusief de afweging.",
  p:`Vat dit document samen in vijf bullets voor het MT.
 Benoem per bullet de belangrijkste afweging en het eventuele risico.
 Gebruik alleen wat in het document staat en voeg niets toe. Sluit af met één zin: waar gaat de discussie echt over?`,
  c:"Feitelijk en volledig op hoofdlijnen? Zijn de afwegingen juist weergegeven?"},
 
-{t:"Twee stukken naast elkaar leggen",app:"Copilot Chat",niv:"Gevorderd",cat:"Beleid & advies",lic:true,
+{t:"Twee stukken naast elkaar leggen",app:"Copilot Chat",niv:"Gevorderd",cat:"Beleid & advies",rol:"Iedereen",lic:true,
  doel:"Verschillen tussen versies, varianten of documenten in beeld brengen.",
  p:`Vergelijk [document A] en [document B].
 Geef een tabel met: onderwerp, wat staat er in A, wat staat er in B, en wat is het verschil in gevolgen.
@@ -322,14 +324,14 @@ Benoem daarna apart: welke punten staan alleen in A, welke alleen in B.
 Interpreteer niet; geef alleen weer wat er staat.`,
  c:"Controleer minstens drie regels van de tabel in de originele stukken."},
 
-{t:"Bestuurlijke samenvatting van één A4",app:"Word",niv:"Gevorderd",cat:"Beleid & advies",lic:true,
+{t:"Bestuurlijke samenvatting van één A4",app:"Word",niv:"Gevorderd",cat:"Beleid & advies",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Een rapport terugbrengen tot wat een bestuurder nodig heeft.",
  p:`Maak van dit rapport een bestuurlijke samenvatting van maximaal één A4 voor een [wethouder / bestuurder / directie].
 Structuur: wat is er aan de hand, wat betekent dat voor ons, welke keuze ligt er voor, wat adviseren we, wat gebeurt er als we niets doen.
 Taalniveau B1, korte zinnen, geen jargon zonder uitleg. Geen cijfers noemen die niet in het rapport staan.`,
  c:"Loop alle cijfers na in de bron en controleer of het advies van jou komt."},
 
-{t:"Opzet voor een zienswijze of reactie",app:"Word",niv:"Gevorderd",cat:"Beleid & advies",lic:false,
+{t:"Opzet voor een zienswijze of reactie",app:"Word",niv:"Gevorderd",cat:"Beleid & advies",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een gestructureerde eerste opzet voor een formele reactie.",
  p:`Maak een opzet voor een zienswijze op [openbaar plan of besluit].
 Structuur: inleiding en belang, per onderdeel onze reactie met onderbouwing, concrete verzoeken aan het bevoegd gezag, en afsluiting.
@@ -337,7 +339,7 @@ Formele maar leesbare ambtelijke toon. Zet [onderbouwing toevoegen] waar een jur
 Doe geen juridische uitspraken en citeer geen wetsartikelen uit jezelf.`,
  c:"Laat de juridische grondslagen controleren door een jurist. Artikelnummers kloppen vaak niet."},
 
-{t:"Risicoparagraaf genereren",app:"Copilot Chat",niv:"Gevorderd",cat:"Beleid & advies",lic:false,
+{t:"Risicoparagraaf genereren",app:"Copilot Chat",niv:"Gevorderd",cat:"Beleid & advies",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een eerste set risico's om zelf aan te scherpen.",
  p:`Ik werk aan [openbaar onderwerp] bij een omgevingsdienst.
 Geef veelvoorkomende risico's, geordend per thema: juridisch, financieel, uitvoerbaarheid, informatieveiligheid, bestuurlijk en draagvlak.
@@ -345,14 +347,14 @@ Geef per risico: korte omschrijving, mogelijk gevolg en een denkrichting voor be
 Houd het algemeen; noem geen organisaties, zaken of personen.`,
  c:"Wat mist er vanuit jouw vakkennis?"},
 
-{t:"Drie scenario's uitwerken",app:"Copilot Chat",niv:"Gevorderd",cat:"Beleid & advies",lic:false,
+{t:"Drie scenario's uitwerken",app:"Copilot Chat",niv:"Gevorderd",cat:"Beleid & advies",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Varianten in beeld brengen voor een keuze.",
  p:`Werk voor [vraagstuk] drie scenario's uit: minimaal, gemiddeld en ambitieus.
 Beschrijf per scenario: wat houdt het in, wat vraagt het aan capaciteit en middelen, welke risico's horen erbij, en wat levert het op.
 Sluit af met een tabel die de drie naast elkaar zet op dezelfde criteria. Kies niet voor mij; geef alleen de afweging.`,
  c:"Zijn de scenario's echt verschillend? Scherp de uitersten zelf aan."},
 
-{t:"Wat ontbreekt er in mijn concept?",app:"Word",niv:"Expert",cat:"Beleid & advies",lic:true,
+{t:"Wat ontbreekt er in mijn concept?",app:"Word",niv:"Expert",cat:"Beleid & advies",rol:"Iedereen",lic:true,
  doel:"Een review op volledigheid in plaats van op taal.",
  p:`Beoordeel dit concept als kritisch meelezer, niet als redacteur. Let niet op spelling.
 Geef:
@@ -364,7 +366,7 @@ Geef:
 Geef geen complimenten en herschrijf de tekst niet.`,
  c:"Je hoeft niet alles over te nemen, maar weet wel wat je bewust weglaat."},
 
-{t:"Vragen voor je jurist of specialist formuleren",app:"Copilot Chat",niv:"Expert",cat:"Beleid & advies",lic:false,
+{t:"Vragen voor je jurist of specialist formuleren",app:"Copilot Chat",niv:"Expert",cat:"Beleid & advies",rol:"Iedereen",lic:false,
  doel:"Beter voorbereid het gesprek in met een specialist.",
  p:`Ik leg [vraagstuk] voor aan onze [jurist / informatieadviseur / financieel adviseur].
 Formuleer tien scherpe vragen die ik moet stellen om een bruikbaar advies te krijgen.
@@ -372,14 +374,14 @@ Orden ze van breed naar specifiek. Geef per vraag in één zin waarom die vraag 
 Geef zelf geen juridisch of financieel advies.`,
  c:"Dit vervangt het advies niet; het helpt je de juiste vraag te stellen."},
 
-{t:"Van rapport naar bestuursvoorstel",app:"Word",niv:"Expert",cat:"Beleid & advies",lic:true,
+{t:"Van rapport naar bestuursvoorstel",app:"Word",niv:"Expert",cat:"Beleid & advies",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Een rapport omzetten naar de vorm die het bestuur verwacht.",
  p:`Zet de inhoud van dit rapport om naar de structuur van een bestuursvoorstel: gevraagd besluit, inleiding, beoogd effect, argumenten, kanttekeningen en risico's, financiële gevolgen, communicatie, vervolgproces.
 Gebruik uitsluitend informatie uit het rapport. Markeer met [ontbreekt] wat het rapport niet behandelt; vul dat niet zelf in.`,
  c:"De plekken met [ontbreekt] vul je zelf in. Controleer het financiële deel apart."},
 
 /* ================= COMMUNICATIE ================= */
-{t:"Een lastige mail herschrijven",app:"Outlook",niv:"Basis",cat:"Communicatie",lic:true,
+{t:"Een lastige mail herschrijven",app:"Outlook",niv:"Basis",cat:"Communicatie",rol:"Iedereen",lic:true,
  doel:"Dezelfde boodschap in een andere toon.",
  p:`Herschrijf deze concept-mail. Houd de inhoud en de boodschap exact gelijk.
 Maak de toon [zakelijk en vriendelijk / neutraal en feitelijk / beslist maar niet bot].
@@ -387,14 +389,14 @@ Korte zinnen, maximaal [150] woorden, duidelijke vraag of vervolgstap aan het ei
 Verwijder verwijten en aannames over de ander.`,
  c:"Lees het resultaat hardop. Jij ondertekent de mail."},
 
-{t:"Mail samenvatten en een antwoord voorbereiden",app:"Outlook",niv:"Basis",cat:"Communicatie",lic:true,
+{t:"Mail samenvatten en een antwoord voorbereiden",app:"Outlook",niv:"Basis",cat:"Communicatie",rol:"Iedereen",lic:true,
  doel:"Lange mailwisselingen sneller afhandelen.",
  p:`Vat deze mailwisseling samen in: waar gaat het over, wat is er al afgesproken, wat wordt er van mij gevraagd en wat is de deadline.
 Maak daarna een concept-antwoord van maximaal [120] woorden waarin ik [toezeg / doorverwijs / om uitstel vraag / aanvullende informatie vraag].
 Gebruik alleen informatie uit de mailwisseling.`,
  c:"Controleer de deadline en de toezegging zelf."},
 
-{t:"Inbox-triage: wat vraagt actie van mij?",app:"Outlook",niv:"Gevorderd",cat:"Communicatie",lic:true,
+{t:"Inbox-triage: wat vraagt actie van mij?",app:"Outlook",niv:"Gevorderd",cat:"Communicatie",rol:"Iedereen",lic:true,
  doel:"Overzicht in je mail na een paar drukke dagen.",
  p:`Geef een overzicht van mijn mail van de afgelopen [3] dagen, geordend in:
 1. vraagt actie van mij, met wat en voor wanneer,
@@ -403,7 +405,7 @@ Gebruik alleen informatie uit de mailwisseling.`,
 Zet de urgente zaken bovenaan en noem per punt de afzender en de datum.`,
  c:"Scan zelf wat als 'kan wachten' is weggezet; urgentie staat niet altijd in de tekst."},
 
-{t:"Brief aan een inwoner naar B1-taal",app:"Word",niv:"Basis",cat:"Communicatie",lic:true,
+{t:"Brief aan een inwoner naar B1-taal",app:"Word",niv:"Basis",cat:"Communicatie",rol:"Iedereen",lic:true,
  doel:"Een formele brief begrijpelijk maken zonder de inhoud te veranderen.",
  p:`Herschrijf deze tekst naar taalniveau B1.
 Houd inhoud en strekking exact gelijk. Gebruik korte zinnen, actieve zinnen en alledaagse woorden.
@@ -411,7 +413,7 @@ Vaktermen en juridische begrippen die moeten blijven staan, laat je staan en leg
 Verander geen termijnen, bedragen of verwijzingen naar regelgeving.`,
  c:"Is het eenvoudiger en nog steeds juridisch juist? Laat een collega meelezen."},
 
-{t:"Intranetbericht uit een besluit",app:"Copilot Chat",niv:"Basis",cat:"Communicatie",lic:false,
+{t:"Intranetbericht uit een besluit",app:"Copilot Chat",niv:"Basis",cat:"Communicatie",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een besluit vertalen naar een bericht voor collega's.",
  p:`Schrijf een intranetbericht van maximaal 200 woorden over onderstaand besluit.
 Structuur: wat is er besloten, waarom, wat merken collega's ervan, wat moeten ze nu doen, waar kunnen ze terecht met vragen.
@@ -421,7 +423,7 @@ Besluit:
 [plak hier de openbare tekst]`,
  c:"Klopt het onderdeel over wat collega's ervan merken? Daar gaat het hen om."},
 
-{t:"Woordvoeringslijn en Q&A",app:"Copilot Chat",niv:"Gevorderd",cat:"Communicatie",lic:false,
+{t:"Woordvoeringslijn en Q&A",app:"Copilot Chat",niv:"Gevorderd",cat:"Communicatie",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Voorbereiding op vragen van pers, bestuur of inwoners.",
  p:`Ik verwacht vragen over [openbaar onderwerp].
 Maak:
@@ -432,7 +434,7 @@ Maak:
 Doe geen toezeggingen namens de organisatie.`,
  c:"Stem af met communicatie en bestuur voordat je dit gebruikt."},
 
-{t:"Mail aan een bestuurder met een beslisvraag",app:"Outlook",niv:"Gevorderd",cat:"Communicatie",lic:true,
+{t:"Mail aan een bestuurder met een beslisvraag",app:"Outlook",niv:"Gevorderd",cat:"Communicatie",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Kort bericht met één heldere beslisvraag.",
  p:`Schrijf een mail van maximaal 150 woorden aan een [bestuurder / directielid].
 Opbouw: eerste zin is de kern, daarna maximaal drie bullets met de relevante feiten, dan één concrete beslisvraag met twee opties en jouw advies in één zin.
@@ -442,7 +444,7 @@ Onderwerp en feiten:
 [plak hier]`,
  c:"Staat jouw advies er nog in, of is het onderweg veranderd?"},
 
-{t:"Spreektekst van drie minuten",app:"Copilot Chat",niv:"Gevorderd",cat:"Communicatie",lic:false,
+{t:"Spreektekst van drie minuten",app:"Copilot Chat",niv:"Gevorderd",cat:"Communicatie",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Van notitie naar tekst die je kunt uitspreken.",
  p:`Maak van onderstaande tekst een spreektekst van ongeveer drie minuten (circa 400 woorden) voor [publiek].
 Spreektaal, korte zinnen, één gedachte per zin. Begin met een concrete aanleiding en eindig met wat je van het publiek vraagt.
@@ -453,14 +455,14 @@ Brontekst:
  c:"Lees hardop en schrap wat niet als jouw woorden klinkt."},
 
 /* ================= DATA & STURING ================= */
-{t:"Een formule maken of uitleggen",app:"Excel",niv:"Basis",cat:"Data & sturing",lic:true,
+{t:"Een formule maken of uitleggen",app:"Excel",niv:"Basis",cat:"Data & sturing",rol:"Iedereen",lic:true,
  doel:"De juiste formule vinden zonder te zoeken.",
  p:`Ik wil in deze sheet [beschrijf wat je wilt berekenen, bijvoorbeeld: per team het aantal zaken dat langer dan 8 weken open staat].
 Geef de formule, leg in gewone taal uit wat elk deel doet, en noem één veelgemaakte fout bij deze formule.
 Vertel ook in welke cel ik hem moet zetten.`,
  c:"Test de formule op rijen waarvan je het antwoord al weet."},
 
-{t:"Trends en uitschieters benoemen",app:"Excel",niv:"Gevorderd",cat:"Data & sturing",lic:true,
+{t:"Trends en uitschieters benoemen",app:"Excel",niv:"Gevorderd",cat:"Data & sturing",rol:"Iedereen",lic:true,
  doel:"Een eerste duiding van je cijfers in gewone taal.",
  p:`Analyseer deze gegevens en beschrijf in gewone taal:
 - de drie opvallendste trends,
@@ -469,14 +471,14 @@ Vertel ook in welke cel ik hem moet zetten.`,
 Geef geen verklaringen of oorzaken; alleen wat je in de cijfers ziet. Noem de cel- of kolomverwijzingen erbij.`,
  c:"Controleer of de genoemde cellen kloppen. Oorzaken bepaal je zelf."},
 
-{t:"Draaitabel voorstellen",app:"Excel",niv:"Gevorderd",cat:"Data & sturing",lic:true,
+{t:"Draaitabel voorstellen",app:"Excel",niv:"Gevorderd",cat:"Data & sturing",rol:"Iedereen",lic:true,
  doel:"Sneller tot een bruikbaar overzicht komen.",
  p:`Ik wil inzicht in [vraag, bijvoorbeeld: doorlooptijd per team per kwartaal].
 Stel twee draaitabellen voor: welke velden in rijen, kolommen, waarden en filters, en wat ik daarmee zie.
 Leg kort uit welke van de twee het best past bij mijn vraag en waarom. Geef ook aan welke kolom eerst opgeschoond moet worden.`,
  c:"Schoon de data eerst op, eventueel samen met een datacollega."},
 
-{t:"KPI's bij een doel bedenken",app:"Copilot Chat",niv:"Gevorderd",cat:"Data & sturing",lic:false,
+{t:"KPI's bij een doel bedenken",app:"Copilot Chat",niv:"Gevorderd",cat:"Data & sturing",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Van een abstract doel naar meetbare indicatoren.",
  p:`Ons doel is: [doel in één zin].
 Stel zes indicatoren voor waarmee we voortgang kunnen meten: drie op resultaat en drie op proces.
@@ -484,20 +486,20 @@ Geef per indicator: wat meet je precies, uit welke bron zou die data kunnen kome
 Houd het passend bij een publieke uitvoeringsorganisatie.`,
  c:"Let op de kolom met ongewenst gedrag; die bepaalt of een indicator bruikbaar is."},
 
-{t:"Voortgangsrapportage uit cijfers",app:"Word",niv:"Expert",cat:"Data & sturing",lic:true,
+{t:"Voortgangsrapportage uit cijfers",app:"Word",niv:"Expert",cat:"Data & sturing",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Van een tabel naar een leesbare rapportage.",
  p:`Schrijf op basis van bijgevoegde cijfers een voortgangsrapportage voor het MT.
 Structuur: stand van zaken in één alinea, per onderdeel de cijfers met korte duiding, afwijkingen ten opzichte van de planning, en drie aandachtspunten.
 Neem alleen cijfers over die in de bron staan en noem erbij uit welke tabel of kolom ze komen. Reken niets uit wat ik niet heb aangeleverd.`,
  c:"Zoek elk getal in de tekst terug in de bron."},
 
-{t:"Datakwaliteit controleren",app:"Excel",niv:"Expert",cat:"Data & sturing",lic:true,
+{t:"Datakwaliteit controleren",app:"Excel",niv:"Expert",cat:"Data & sturing",rol:"Iedereen",lic:true,
  doel:"Fouten in een bestand opsporen voordat je ermee rekent.",
  p:`Controleer dit bestand op datakwaliteit. Kijk naar: lege cellen in verplichte kolommen, dubbele regels, inconsistente schrijfwijzen in tekstkolommen, datums in verschillende notaties, en getallen die als tekst zijn opgeslagen.
 Geef per bevinding: kolom, aantal, één voorbeeld en een voorstel om het op te lossen. Wijzig zelf niets.`,
  c:"Werk in een kopie en laat niets aanpassen zonder dat je het voorstel hebt gelezen."},
 
-{t:"Datavragen formuleren voor je analist",app:"Copilot Chat",niv:"Gevorderd",cat:"Data & sturing",lic:false,
+{t:"Datavragen formuleren voor je analist",app:"Copilot Chat",niv:"Gevorderd",cat:"Data & sturing",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een betere uitvraag doen bij je informatiespecialist.",
  p:`Ik wil weten: [bestuurlijke vraag].
 Vertaal dit naar een concrete uitvraag voor een data- of informatieanalist: welke gegevens zijn nodig, over welke periode, op welk detailniveau, welke afbakening en welke definities moeten we eerst vastleggen.
@@ -505,14 +507,14 @@ Noem ook drie definitiekwesties die mis kunnen gaan.`,
  c:"Leg de definities vast voordat iemand gaat tellen."},
 
 /* ================= LEIDINGGEVEN & TEAM ================= */
-{t:"Teamoverleg met werkvorm",app:"Copilot Chat",niv:"Basis",cat:"Leidinggeven & team",lic:false,
+{t:"Teamoverleg met werkvorm",app:"Copilot Chat",niv:"Basis",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een overleg met ruimte voor inbreng van het team.",
  p:`Maak een opzet voor een teamoverleg van [60] minuten over [onderwerp] met [12] deelnemers.
 Geef per onderdeel: doel, tijd en werkvorm. Zorg dat minimaal de helft van de tijd gaat naar inbreng van het team.
 Voeg drie vragen toe waarmee ik het gesprek op gang krijg. Geen energizers of spelletjes.`,
  c:"Past de werkvorm bij jouw team?"},
 
-{t:"SMART-teamdoelen uit het jaarplan",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",lic:false,
+{t:"SMART-teamdoelen uit het jaarplan",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Van organisatiedoelen naar doelen voor jouw team.",
  p:`Onderstaande doelen komen uit ons jaarplan. Vertaal ze naar drie SMART-teamdoelen voor een team van [aantal] mensen bij een overheidsorganisatie.
 Geef per doel: formulering, hoe je het meet, wanneer het af is, en wat er nodig is om het te halen.
@@ -522,7 +524,7 @@ Jaarplandoelen:
 [plak hier]`,
  c:"Bespreek de doelen met het team voordat je ze vaststelt."},
 
-{t:"Je voorbereiden op een lastig gesprek",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",lic:false,
+{t:"Je voorbereiden op een lastig gesprek",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Structuur voor je eigen voorbereiding, zonder oordeel over de ander.",
  p:`Ik voer een gesprek over [algemeen thema, bijvoorbeeld: werkdruk, samenwerking in het team, een wijziging in takenpakket].
 Help me mijn eigen voorbereiding structureren:
@@ -533,28 +535,28 @@ Help me mijn eigen voorbereiding structureren:
 Gebruik geen namen of persoonlijke gegevens en geef geen oordeel over een medewerker.`,
  c:"Copilot mag geen rol spelen in een oordeel over het functioneren van een medewerker. Gebruik dit alleen voor je eigen voorbereiding."},
 
-{t:"Inwerkplan 30-60-90 dagen",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",lic:false,
+{t:"Inwerkplan 30-60-90 dagen",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een nieuwe collega gestructureerd op weg helpen.",
  p:`Maak een inwerkplan van 30, 60 en 90 dagen voor een nieuwe [functie] bij een omgevingsdienst.
 Geef per periode: leerdoelen, kennismakingen (op rol, niet op naam), taken om zelf op te pakken, en wat we na die periode samen evalueren.
 Houd rekening met een publieke organisatie met vergunningverlening, toezicht en handhaving. Geen persoonsgegevens.`,
  c:"Vul aan wat specifiek is voor jouw team."},
 
-{t:"Werkafspraken AI-gebruik in je team",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",lic:false,
+{t:"Werkafspraken AI-gebruik in je team",app:"Copilot Chat",niv:"Gevorderd",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Vastleggen wat wel en niet mag, aansluitend op de handreiking.",
  p:`Maak een voorstel voor werkafspraken over AI-gebruik binnen een team bij een overheidsorganisatie.
 Behandel: welke informatie nooit in een prompt mag, wie de output controleert, wanneer je vermeldt dat AI is gebruikt, wat je doet bij een incident, en hoe we leren van elkaars prompts.
 Maximaal één A4, in de je-vorm, concreet en zonder juridisch jargon. Geen verwijzingen naar wetsartikelen uit jezelf.`,
  c:"Leg dit naast de AI-handreiking van OD NHN; bij verschil geldt de handreiking."},
 
-{t:"Capaciteitsdilemma uitwerken",app:"Copilot Chat",niv:"Expert",cat:"Leidinggeven & team",lic:false,
+{t:"Capaciteitsdilemma uitwerken",app:"Copilot Chat",niv:"Expert",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Keuzes en consequenties scherp krijgen voordat je ze voorlegt.",
  p:`Situatie: [beschrijf het dilemma in algemene termen, zonder namen].
 Werk vier handelingsopties uit. Geef per optie: wat je doet, wat het oplevert, wat het kost aan capaciteit, welk risico je accepteert, en wie je erover moet informeren.
 Sluit af met de vraag die ik aan het MT zou moeten voorleggen. Adviseer zelf geen keuze.`,
  c:"Vul zelf de optie aan die ontbreekt voordat je dit deelt."},
 
-{t:"Feedback op je eigen mail als leidinggevende",app:"Outlook",niv:"Basis",cat:"Leidinggeven & team",lic:true,
+{t:"Feedback op je eigen mail als leidinggevende",app:"Outlook",niv:"Basis",cat:"Leidinggeven & team",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Een check voordat je op verzenden drukt.",
  p:`Lees deze concept-mail mee als kritische collega.
 Beoordeel: is de boodschap in één keer duidelijk, kan iemand zich onterecht aangesproken voelen, ontbreekt er informatie die de lezer nodig heeft, en is de gevraagde actie concreet?
@@ -562,7 +564,7 @@ Geef drie verbeterpunten. Herschrijf de mail niet.`,
  c:"Je hoeft niet alle punten over te nemen, wel te lezen."},
 
 /* ================= PROJECTEN ================= */
-{t:"Projectplan structureren",app:"Word",niv:"Basis",cat:"Projecten",lic:true,
+{t:"Projectplan structureren",app:"Word",niv:"Basis",cat:"Projecten",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Van losse aantekeningen naar een projectstructuur.",
  p:`Structureer onderstaande tekst tot een projectplan met: aanleiding, doel, scope en wat er buiten scope valt, resultaten, planning op hoofdlijnen, betrokkenen (op rol), risico's en benodigde middelen.
 Voeg niets toe. Zet [aanvullen] waar informatie ontbreekt.
@@ -571,7 +573,7 @@ Tekst:
 [plak hier]`,
  c:"De buiten-scope-lijst en de risico's vul je zelf aan."},
 
-{t:"Startnotitie uit ruwe aantekeningen",app:"Word",niv:"Gevorderd",cat:"Projecten",lic:true,
+{t:"Startnotitie uit ruwe aantekeningen",app:"Word",niv:"Gevorderd",cat:"Projecten",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Aantekeningen na een startgesprek omzetten in een stuk.",
  p:`Maak van onderstaande aantekeningen een startnotitie met: aanleiding, probleemstelling, doel, afbakening, aanpak op hoofdlijnen, betrokken partijen op rol, en open vragen.
 Alle inhoud uit de aantekeningen moet terugkomen. Verzin niets bij. Zet de open vragen letterlijk over als vraag.
@@ -580,14 +582,14 @@ Aantekeningen:
 [plak hier]`,
  c:"Loop je aantekeningen regel voor regel na op volledigheid."},
 
-{t:"Stakeholderanalyse",app:"Copilot Chat",niv:"Gevorderd",cat:"Projecten",lic:false,
+{t:"Stakeholderanalyse",app:"Copilot Chat",niv:"Gevorderd",cat:"Projecten",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Overzicht van belangen en benodigde aandacht.",
  p:`Maak een stakeholderanalyse voor [project] bij een omgevingsdienst.
 Geef een tabel met: partij (op rol of type, geen namen), belang, invloed, houding die je kunt verwachten, en gewenste betrokkenheid.
 Benoem daarna drie partijen die vaak worden vergeten bij dit soort projecten.`,
  c:"Toets de lijst aan je eigen netwerk, vooral de vergeten partijen."},
 
-{t:"Planning met mijlpalen",app:"Excel",niv:"Gevorderd",cat:"Projecten",lic:true,
+{t:"Planning met mijlpalen",app:"Excel",niv:"Gevorderd",cat:"Projecten",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Een planning op hoofdlijnen.",
  p:`Maak op basis van onderstaande fasen een planningstabel met kolommen: fase, activiteit, mijlpaal, startdatum, einddatum, afhankelijkheid, eigenaar (op rol).
 Looptijd: [startdatum] tot [einddatum]. Verdeel realistisch en houd rekening met vakantieperiodes in Nederland.
@@ -597,7 +599,7 @@ Fasen:
 [plak hier]`,
  c:"Een planning uit Copilot is een voorstel. Toets hem bij de uitvoerders."},
 
-{t:"Evaluatie-opzet en lessons learned",app:"Copilot Chat",niv:"Expert",cat:"Projecten",lic:false,
+{t:"Evaluatie-opzet en lessons learned",app:"Copilot Chat",niv:"Expert",cat:"Projecten",rol:"MT, teamleads & adviseurs",lic:false,
  doel:"Een evaluatie die meer oplevert dan algemeenheden.",
  p:`Maak een opzet voor de evaluatie van [project].
 Geef: vier evaluatievragen die niet met ja of nee te beantwoorden zijn, de bronnen die je ervoor nodig hebt, een werkvorm voor een sessie van 90 minuten, en de structuur van het evaluatieverslag.
@@ -605,21 +607,21 @@ Zorg dat er expliciet ruimte is voor wat niet goed ging, zonder dat het over per
  c:"Spreek vooraf af wat er met de uitkomsten gebeurt."},
 
 /* ================= PRESENTEREN ================= */
-{t:"Vijf slides uit een document",app:"PowerPoint",niv:"Basis",cat:"Presenteren",lic:true,
+{t:"Vijf slides uit een document",app:"PowerPoint",niv:"Basis",cat:"Presenteren",rol:"Iedereen",lic:true,
  doel:"Een eerste deck vanuit een bestaand stuk.",
  p:`Maak een presentatie van vijf slides op basis van dit document, gericht op [doelgroep].
 Per slide: één kernboodschap als titel en maximaal vier korte bullets.
 Gebruik alleen inhoud uit het document. Geen afbeeldingen voorstellen en geen afsluitende bedankslide.`,
  c:"Klopt de storyline? Copilot volgt de volgorde van het document."},
 
-{t:"Spreeknotities bij je slides",app:"PowerPoint",niv:"Gevorderd",cat:"Presenteren",lic:true,
+{t:"Spreeknotities bij je slides",app:"PowerPoint",niv:"Gevorderd",cat:"Presenteren",rol:"Iedereen",lic:true,
  doel:"Notities die je kunt uitspreken.",
  p:`Schrijf per slide spreeknotities van ongeveer 60 woorden.
 Spreektaal, één gedachte per zin, en een natuurlijke overgang naar de volgende slide.
 Herhaal niet letterlijk wat er op de slide staat; vul aan. Gebruik geen feiten die niet in het deck staan.`,
  c:"Voeg je eigen voorbeelden toe."},
 
-{t:"Deck inkorten en herordenen",app:"PowerPoint",niv:"Expert",cat:"Presenteren",lic:true,
+{t:"Deck inkorten en herordenen",app:"PowerPoint",niv:"Expert",cat:"Presenteren",rol:"MT, teamleads & adviseurs",lic:true,
  doel:"Een te lang deck terugbrengen.",
  p:`Dit deck duurt te lang. Beoordeel het als criticus:
 - welke slides kunnen weg zonder dat het verhaal lijdt,
@@ -630,35 +632,35 @@ Geef een voorgestelde volgorde met per slide één regel waarom die erin blijft.
  c:"Beslis zelf wat weg mag; jij kent je publiek."},
 
 /* ================= WERKEN MET JE EIGEN BESTANDEN ================= */
-{t:"Een document samenvatten uit je OneDrive",app:"Copilot Chat",niv:"Basis",cat:"Je eigen bestanden",lic:true,
+{t:"Een document samenvatten uit je OneDrive",app:"Copilot Chat",niv:"Basis",cat:"Je eigen bestanden",rol:"Iedereen",lic:true,
  doel:"Weten waar een document over gaat zonder het te openen.",
  p:`Vat /[bestandsnaam] samen in zeven bullets voor een collega die het stuk niet kent.
 Noem aan het eind: wie het stuk heeft geschreven, van welke datum het is en wat de status lijkt te zijn (concept of definitief).
 Voeg niets toe dat niet in het document staat.`,
  c:"Noem een bestand met een schuine streep. Controleer of het juiste bestand is gebruikt."},
 
-{t:"Meerdere documenten bundelen tot één overzicht",app:"Copilot Chat",niv:"Gevorderd",cat:"Je eigen bestanden",lic:true,
+{t:"Meerdere documenten bundelen tot één overzicht",app:"Copilot Chat",niv:"Gevorderd",cat:"Je eigen bestanden",rol:"Iedereen",lic:true,
  doel:"Een thema overzien dat over meerdere stukken verspreid is.",
  p:`Gebruik /[bestand 1], /[bestand 2] en /[bestand 3].
 Maak één overzicht van wat er over [onderwerp] bekend is, geordend per thema en niet per document.
 Noem bij elk punt uit welk document het komt. Benoem apart waar de documenten elkaar tegenspreken en waar informatie ontbreekt.`,
  c:"Controleer gevonden tegenstrijdigheden in de bron voordat je ze deelt."},
 
-{t:"Wat is er gebeurd rond onderwerp X?",app:"Copilot Chat",niv:"Gevorderd",cat:"Je eigen bestanden",lic:true,
+{t:"Wat is er gebeurd rond onderwerp X?",app:"Copilot Chat",niv:"Gevorderd",cat:"Je eigen bestanden",rol:"Iedereen",lic:true,
  doel:"Een tijdlijn uit je eigen werkomgeving.",
  p:`Maak een tijdlijn van alles wat ik sinds [datum] heb gezien over [onderwerp]: mail, documenten, chats en vergaderingen.
 Geef per item: datum, type bron, en in één regel wat er gebeurde. Chronologisch.
 Sluit af met: wat is de laatste stand van zaken en welke actie staat nog open bij mij?`,
  c:"Copilot zoekt alleen in wat jij mag zien en vindt niet alles."},
 
-{t:"Terugvinden waar iets staat",app:"Copilot Chat",niv:"Basis",cat:"Je eigen bestanden",lic:true,
+{t:"Terugvinden waar iets staat",app:"Copilot Chat",niv:"Basis",cat:"Je eigen bestanden",rol:"Iedereen",lic:true,
  doel:"Een document terugvinden waarvan je weet dat het bestaat.",
  p:`Ik zoek een document over [onderwerp], waarschijnlijk van [periode], mogelijk gedeeld door [rol of team].
 Geef de vijf meest waarschijnlijke bestanden met: titel, datum, eigenaar en in één regel waarom dit het kan zijn.
 Als je het niet vindt, zeg dat dan en stel drie andere zoektermen voor.`,
  c:"Open het bestand voordat je het doorstuurt; een gelijkende titel is niet hetzelfde stuk."},
 
-{t:"Conceptversies vergelijken",app:"Word",niv:"Gevorderd",cat:"Je eigen bestanden",lic:true,
+{t:"Conceptversies vergelijken",app:"Word",niv:"Gevorderd",cat:"Je eigen bestanden",rol:"Iedereen",lic:true,
  doel:"Weten wat er inhoudelijk is veranderd.",
  p:`Vergelijk dit document met /[vorige versie].
 Geef: welke inhoudelijke wijzigingen zijn er, welke passages zijn verwijderd, en welke wijziging heeft gevolgen voor de strekking of voor eerdere afspraken.
@@ -666,7 +668,7 @@ Negeer tekstuele en stilistische wijzigingen. Noem per wijziging de paragraaf.`,
  c:"Gebruik voor formele stukken ook de vergelijkfunctie van Word."},
 
 /* ================= PROMPT-TECHNIEK ================= */
-{t:"Rolprompt als startsjabloon",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",lic:false,
+{t:"Rolprompt als startsjabloon",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",rol:"Iedereen",lic:false,
  doel:"Één sjabloon waarmee je elke taak kunt aanvliegen.",
  p:`Rol: je bent [rol] bij een omgevingsdienst, met kennis van [vakgebied].
 Taak: [wat moet er gebeuren].
@@ -678,20 +680,20 @@ Tekst:
 [plak hier]`,
  c:"Bewaar je ingevulde versies voor hergebruik."},
 
-{t:"Laat Copilot eerst vragen stellen",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",lic:false,
+{t:"Laat Copilot eerst vragen stellen",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",rol:"Iedereen",lic:false,
  doel:"Voorkomen dat je een algemeen antwoord krijgt op een complexe vraag.",
  p:`Ik wil [resultaat] maken. Voordat je begint: stel mij maximaal zeven vragen die je nodig hebt om dit goed te doen.
 Stel ze één voor één en wacht op mijn antwoord. Begin pas met schrijven als je genoeg weet, of als ik zeg dat je kunt beginnen.`,
  c:"Kost twee minuten extra en scheelt meestal een paar herschrijfrondes."},
 
-{t:"Copilot zijn eigen output laten nakijken",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",lic:false,
+{t:"Copilot zijn eigen output laten nakijken",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",rol:"Iedereen",lic:false,
  doel:"Een kwaliteitslus die zwakke plekken zichtbaar maakt.",
  p:`Beoordeel je vorige antwoord kritisch op: feitelijke juistheid, aannames die er niet in hadden gemogen, eenzijdigheid, en passendheid voor de doelgroep.
 Geef per punt wat er mis is. Geef daarna pas een verbeterde versie.
 Zeg expliciet welke onderdelen je niet kunt verifiëren.`,
  c:"Dit is geen onafhankelijke controle. Jij blijft de eindredacteur."},
 
-{t:"Een eigen promptsjabloon bouwen",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",lic:false,
+{t:"Een eigen promptsjabloon bouwen",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",rol:"Iedereen",lic:false,
  doel:"Een terugkerende taak één keer goed vastleggen.",
  p:`Ik doe regelmatig deze taak: [beschrijf de taak en wat er altijd hetzelfde aan is].
 Maak hiervoor een herbruikbaar promptsjabloon met duidelijke invulvelden tussen blokhaken.
@@ -699,7 +701,7 @@ Geef daarna: een ingevuld voorbeeld, en drie controlevragen die ik na elke uitvo
 Houd de prompt zo kort als kan zonder dat het resultaat slechter wordt.`,
  c:"Deel je sjablonen met collega's, zodat de organisatie een eigen bibliotheek opbouwt."},
 
-{t:"Herhaalbare opdracht met vaste uitvoer",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",lic:false,
+{t:"Herhaalbare opdracht met vaste uitvoer",app:"Copilot Chat",niv:"Expert",cat:"Prompttechniek",rol:"Iedereen",lic:false,
  doel:"Elke keer dezelfde structuur, zodat output vergelijkbaar is.",
  p:`Voer deze taak uit en gebruik altijd exact dit uitvoerformaat:
 
@@ -714,6 +716,195 @@ Wijk niet af van dit format, ook niet als het onderwerp daar niet goed bij past;
 Taak en bron:
 [plak hier]`,
  c:"Het blok 'nog checken' is het belangrijkste deel van de uitvoer."}
+,
+/* ================= ADMINISTRATIE, SECRETARIAAT & KLANTCONTACT ================= */
+{t:"Standaardbrief opstellen",app:"Word",niv:"Basis",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:true,
+ doel:"Een eerste versie van een terugkerende brief, op basis van je eigen sjabloon.",
+ p:`Schrijf een conceptbrief over [onderwerp] aan [type ontvanger, bijvoorbeeld: een aanvrager, een bedrijf, een inwoner].
+Structuur: aanleiding, wat we hebben besloten of gedaan, wat dat voor de ontvanger betekent, wat er van de ontvanger wordt verwacht en voor wanneer, en waar hij terecht kan met vragen.
+Taalniveau B1, korte zinnen, zakelijk en vriendelijk. Zet [invullen] bij alles wat ik nog moet aanvullen.
+Gebruik geen namen, adressen of zaaknummers.`,
+ c:"Leg de brief naast het officiële sjabloon. Termijnen en verwijzingen naar regelgeving controleer je zelf."},
+
+{t:"Standaardantwoord op een veelgestelde vraag",app:"Outlook",niv:"Basis",cat:"Communicatie",rol:"Administratie & secretariaat",lic:true,
+ doel:"Eén goed antwoord dat je daarna steeds hergebruikt.",
+ p:`Schrijf een standaardantwoord op deze veelgestelde vraag: [vraag].
+Maximaal 150 woorden, taalniveau B1, vriendelijke en neutrale toon.
+Opbouw: kort antwoord in de eerste zin, dan de toelichting, dan wat de ontvanger moet doen.
+Maak drie varianten: één als het antwoord ja is, één als het nee is, en één als we meer informatie nodig hebben.`,
+ c:"Laat het standaardantwoord één keer nakijken door een inhoudelijk collega voordat je het gaat hergebruiken."},
+
+{t:"Telefoon- of balienotitie uitwerken",app:"Copilot Chat",niv:"Basis",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:false,
+ doel:"Van krabbels naar een nette notitie die een collega kan oppakken.",
+ p:`Werk onderstaande aantekeningen uit tot een korte notitie met: onderwerp, wat er is gevraagd of gemeld, wat is afgesproken, welke actie nodig is en voor wanneer.
+Maximaal 120 woorden, zakelijke toon. Voeg niets toe en vul niets aan.
+Zet [onbekend] bij ontbrekende informatie.
+
+Aantekeningen:
+[plak hier je geanonimiseerde aantekeningen]`,
+ c:"Vul naam en zaaknummer pas in het systeem in, niet in de prompt."},
+
+{t:"Notuleren vanuit ruwe aantekeningen",app:"Copilot Chat",niv:"Basis",cat:"Vergaderen & besluiten",rol:"Administratie & secretariaat",lic:false,
+ doel:"Een leesbaar verslag van een overleg waar je zelf bij zat.",
+ p:`Maak van onderstaande aantekeningen een verslag met per agendapunt: bespreking in maximaal drie zinnen, besluit, en actie met eigenaar op rol en termijn.
+Gebruik alleen wat er staat. Zet [onduidelijk] waar mijn aantekening geen besluit bevat.
+Zakelijke toon, geen letterlijke citaten van personen.
+
+Aantekeningen:
+[plak hier]`,
+ c:"Laat het verslag vaststellen in het volgende overleg; dat blijft de enige echte controle."},
+
+{t:"Checklist voor een terugkerende taak",app:"Copilot Chat",niv:"Basis",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:false,
+ doel:"Vastleggen wat er bij een vaste klus allemaal moet gebeuren.",
+ p:`Maak een checklist voor deze terugkerende taak: [beschrijf de taak en wat er altijd hetzelfde aan is].
+Orden de stappen chronologisch en geef per stap aan: wat je doet, wat je nodig hebt en wanneer de stap af moet zijn.
+Zet aan het eind drie punten die vaak worden vergeten bij dit soort taken.
+Houd het algemeen en noem geen systemen of personen die ik niet heb genoemd.`,
+ c:"Loop de checklist één keer mee met een collega die de taak ook doet; die ziet wat ontbreekt."},
+
+{t:"Tekst controleren op taal en consistentie",app:"Word",niv:"Basis",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:true,
+ doel:"Een laatste controle voordat een stuk de deur uitgaat.",
+ p:`Controleer deze tekst op: spelfouten, dubbele woorden, inconsistente schrijfwijzen (hoofdletters, afkortingen, datumnotatie), onduidelijke zinnen van meer dan 25 woorden, en een aanhef of afsluiting die niet past bij de rest.
+Geef een lijst met: wat je vond, waar het staat, en het voorstel. Pas de tekst zelf niet aan.`,
+ c:"Loop de lijst zelf langs; niet elke gemelde fout is een fout."},
+
+{t:"Lijst opschonen en uniformeren",app:"Excel",niv:"Gevorderd",cat:"Data & sturing",rol:"Administratie & secretariaat",lic:true,
+ doel:"Een rommelige lijst bruikbaar maken.",
+ p:`Bekijk deze lijst en geef een voorstel om hem te uniformeren: schrijfwijzen die door elkaar lopen, verschillende datumnotaties, overbodige spaties, dubbele regels en lege verplichte velden.
+Geef per bevinding de kolom, het aantal en een voorbeeld. Stel de formule of de stap voor waarmee ik het oplos. Wijzig zelf niets.`,
+ c:"Werk in een kopie en controleer het aantal regels voor en na het opschonen."},
+
+{t:"Invulsjabloon of formulier maken",app:"Word",niv:"Gevorderd",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:true,
+ doel:"Eén keer een sjabloon maken dat daarna iedereen gebruikt.",
+ p:`Maak een invulsjabloon voor [type document, bijvoorbeeld: een verslag, een aanvraagformulier, een intakeformulier].
+Geef: de vaste kopjes, per kopje een korte invulinstructie tussen haakjes, en de velden die altijd ingevuld moeten worden.
+Houd het zo kort mogelijk: liever acht nuttige velden dan twintig velden die niemand invult.
+Vraag geen persoonsgegevens uit die niet strikt nodig zijn.`,
+ c:"Dat laatste punt is een AVG-vraag: elk veld dat je uitvraagt, moet je ook kunnen verantwoorden."},
+
+{t:"Takenoverzicht uit losse berichten",app:"Copilot Chat",niv:"Basis",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:true,
+ doel:"Overzicht van wat er nog ligt na een paar drukke dagen.",
+ p:`Haal uit onderstaande tekst alle acties die van mij worden gevraagd.
+Geef een tabel met: actie, wie het vraagt (op rol), deadline als die genoemd is, en urgentie (hoog, midden, laag) met in één regel waarom.
+Verzin geen deadlines; laat het veld leeg als er geen datum staat.
+
+[plak hier je geanonimiseerde tekst]`,
+ c:"Controleer de urgentie-inschatting zelf; die kent de context niet."},
+
+{t:"Vergaderstukken samenvatten voor de voorzitter",app:"Copilot Chat",niv:"Gevorderd",cat:"Vergaderen & besluiten",rol:"Administratie & secretariaat",lic:true,
+ doel:"De voorzitter in één oogopslag laten zien wat er speelt.",
+ p:`Vat de bijgevoegde stukken samen in een overzicht per agendapunt met: waar gaat het over in twee zinnen, wat wordt er van de vergadering gevraagd (informeren, opiniëren of besluiten), en welke vraag waarschijnlijk wordt gesteld.
+Maximaal vijf regels per agendapunt. Gebruik alleen wat in de stukken staat.`,
+ c:"Zijn alle agendapunten meegenomen? Tel ze na."},
+
+{t:"Standaardteksten gelijktrekken",app:"Copilot Chat",niv:"Gevorderd",cat:"Administratief werk",rol:"Administratie & secretariaat",lic:false,
+ doel:"Verschillende versies van dezelfde tekst terugbrengen tot één.",
+ p:`Hieronder staan [aantal] versies van dezelfde standaardtekst.
+Geef: wat er inhoudelijk verschilt tussen de versies, welke formuleringen het duidelijkst zijn, en één voorgestelde gezamenlijke versie.
+Geef apart aan welke verschillen inhoudelijk zijn en welke alleen stilistisch; die eerste moet ik laten beoordelen.
+
+Versies:
+[plak hier]`,
+ c:"Inhoudelijke verschillen leg je voor aan de inhoudelijk verantwoordelijke voordat je ze gelijktrekt."},
+
+/* ================= RAPPORTEREN & VAKINHOUD ================= */
+{t:"Rapport structureren volgens je eigen sjabloon",app:"Word",niv:"Basis",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:true,
+ doel:"Je bevindingen in de vaste rapportstructuur zetten.",
+ p:`Hieronder staat eerst de structuur die wij gebruiken, daarna mijn ruwe tekst.
+Zet mijn tekst in die structuur. Verplaats inhoud, maar verander niets aan de bevindingen en voeg niets toe.
+Zet [aanvullen] onder een kopje waar ik nog niets heb geschreven.
+
+Structuur:
+[plak hier de kopjes van jullie sjabloon]
+
+Mijn tekst:
+[plak hier je geanonimiseerde tekst]`,
+ c:"Lees de bevindingen na het herordenen opnieuw; bij verplaatsen gaat soms context verloren."},
+
+{t:"Bevindingen omzetten naar lopende tekst",app:"Copilot Chat",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Van een lijst steekwoorden naar leesbare rapporttekst.",
+ p:`Maak van onderstaande bevindingen lopende tekst voor een rapport.
+Eén alinea per bevinding: wat is waargenomen, en waar in de tekst een conclusie hoort, zet je [conclusie invullen].
+Neutrale, feitelijke toon. Geen waardeoordelen, geen woorden als ernstig, zorgelijk of onacceptabel tenzij ik ze zelf heb gebruikt.
+Voeg geen bevindingen toe en laat er geen weg.
+
+Bevindingen:
+[plak hier, zonder bedrijfsnamen, adressen of zaaknummers]`,
+ c:"De conclusie is vakwerk en blijft van jou. Controleer ook of de neutrale toon niet is afgezwakt wat je bedoelde."},
+
+{t:"Vakjargon uitleggen voor een leek",app:"Copilot Chat",niv:"Basis",cat:"Communicatie",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Een technische passage begrijpelijk maken voor een inwoner of bestuurder.",
+ p:`Leg onderstaande passage uit voor iemand zonder vakkennis, bijvoorbeeld een inwoner of een bestuurder.
+Gebruik maximaal 150 woorden, korte zinnen en alledaagse woorden.
+Noem de vaktermen die echt nodig zijn wel, met tussen haakjes een uitleg van één zin.
+Verander de betekenis niet en laat getallen, eenheden en normwaarden ongewijzigd.
+
+Passage:
+[plak hier de openbare of geanonimiseerde tekst]`,
+ c:"Controleer of de nuance overeind staat. Eenvoudiger maken gaat snel ten koste van een voorbehoud."},
+
+{t:"Begrippen en definities op een rij",app:"Copilot Chat",niv:"Basis",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Een begrippenlijst bij een rapport of notitie.",
+ p:`Haal uit onderstaande tekst alle vaktermen, afkortingen en begrippen die een lezer zonder vakkennis niet kent.
+Geef een alfabetische lijst met per begrip een uitleg van maximaal twee zinnen, in gewone taal.
+Gebruik alleen begrippen die in de tekst voorkomen en verzin geen definities die er niet in staan; zet [definitie controleren] als je het niet uit de tekst kunt halen.
+
+Tekst:
+[plak hier]`,
+ c:"Definities uit een taalmodel zijn niet jullie definities. Controleer ze tegen de wet, de norm of jullie eigen begrippenkader."},
+
+{t:"Checklist voor een terugkerende controle",app:"Copilot Chat",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Een voorbereidingslijst zodat je niets vergeet.",
+ p:`Ik bereid een terugkerende controle of beoordeling voor op het gebied van [vakgebied, bijvoorbeeld: geluid, bodem, afval, brandveiligheid].
+Maak een voorbereidingschecklist met: wat ik vooraf uitzoek, wat ik ter plaatse of in de stukken nakijk, wat ik vastleg, en wat ik achteraf afrond.
+Houd het algemeen en algemeen toepasbaar. Verwijs niet naar specifieke wetsartikelen of normwaarden.`,
+ c:"Dit is een geheugensteun, geen protocol. Jullie eigen werkinstructie en het wettelijk kader gaan voor."},
+
+{t:"Een openbaar rapport van een ander doorgronden",app:"Copilot Chat",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:true,
+ doel:"Sneller snappen wat er in een extern rapport staat en wat ontbreekt.",
+ p:`Vat dit openbare rapport samen in: onderzoeksvraag, gebruikte methode, belangrijkste resultaten, conclusies en de beperkingen die de auteurs zelf noemen.
+Geef daarna drie vragen die ik als vakinhoudelijk lezer zou stellen over de methode of de onderbouwing.
+Gebruik alleen wat in het rapport staat en geef aan wat het rapport niet behandelt.`,
+ c:"Het oordeel over de methode is vakwerk. Gebruik dit als startpunt, niet als beoordeling."},
+
+{t:"Vragen opstellen bij een regeltekst",app:"Copilot Chat",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Grip krijgen op een lastige passage voordat je hem voorlegt.",
+ p:`Hieronder staat een passage uit een openbare regeling of norm.
+Benoem: welke begrippen in deze passage voor meerdere uitleg vatbaar zijn, welke voorwaarden er precies worden gesteld, en welke tien vragen ik zou moeten stellen om de passage goed toe te passen.
+Leg de passage niet voor mij uit en geef geen juridisch oordeel.
+
+Passage:
+[plak hier de openbare tekst]`,
+ c:"De uitleg zelf haal je bij een jurist of bij het bevoegd gezag, niet bij Copilot."},
+
+{t:"Conceptrapport laten tegenlezen",app:"Word",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:true,
+ doel:"Een check op leesbaarheid en opbouw, niet op de inhoud.",
+ p:`Lees dit conceptrapport mee als kritische lezer zonder vakkennis.
+Geef: welke passages je niet begrijpt en waarom, waar een conclusie niet volgt uit de daarvoor genoemde bevindingen, waar jargon onnodig is, en welke vragen een lezer overhoudt.
+Beoordeel de vakinhoud niet en herschrijf niets.`,
+ c:"Een onbegrijpelijke passage is niet altijd fout. Soms moet het precies zo staan; dan laat je het staan."},
+
+{t:"Meetresultaat of cijfer toelichten in gewone taal",app:"Copilot Chat",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Uitleggen wat een getal betekent voor iemand die de eenheid niet kent.",
+ p:`Schrijf een toelichting van maximaal 120 woorden bij dit resultaat: [beschrijf het resultaat, de eenheid en de norm of referentie].
+Leg uit: wat is er gemeten, wat betekent dit getal, en hoe verhoudt het zich tot de genoemde referentie.
+Gebruik gewone taal. Trek geen conclusie over wat er moet gebeuren en gebruik geen geruststellende of alarmerende woorden.`,
+ c:"Controleer of de verhouding tot de norm correct is weergegeven; reken het zelf na."},
+
+{t:"Vaste tekstblokken voor terugkerende rapportdelen",app:"Copilot Chat",niv:"Expert",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Onderdelen die in elk rapport terugkomen één keer goed formuleren.",
+ p:`Ik schrijf regelmatig rapporten waarin [onderdeel, bijvoorbeeld: de aanleiding, de werkwijze, de leeswijzer, het voorbehoud] steeds terugkomt.
+Schrijf drie varianten van dit tekstblok: kort, uitgebreid en formeel. Zet invulvelden tussen blokhaken voor alles wat per rapport verschilt.
+Neutrale, feitelijke toon. Geen aannames over de inhoud van het onderzoek.`,
+ c:"Laat de varianten één keer vaststellen binnen je team, dan gebruikt iedereen dezelfde."},
+
+{t:"Gesprek met een bedrijf of aanvrager voorbereiden",app:"Copilot Chat",niv:"Gevorderd",cat:"Rapporteren",rol:"Vakinhoud & rapportage",lic:false,
+ doel:"Structuur voor je eigen voorbereiding op een inhoudelijk gesprek.",
+ p:`Ik heb een gesprek over [algemeen onderwerp, zonder bedrijfsnaam of zaak].
+Help me voorbereiden: welke vragen stel ik om eerst het volledige beeld te krijgen, hoe breng ik een lastige boodschap feitelijk en zonder verwijt, welke drie reacties kan ik verwachten en hoe blijf ik dan bij de inhoud, en hoe leg ik de afspraken aan het eind vast.
+Geef geen oordeel over de casus en gebruik geen namen of gegevens.`,
+ c:"Het oordeel over de casus komt uit het dossier en uit jouw vakkennis, niet hieruit."}
+
 ];
 
 /* ---------------- opbouw ---------------- */
@@ -724,8 +915,9 @@ const telling=document.getElementById('telling');
 const APPS=[...new Set(PROMPTS.map(p=>p.app))];
 const NIVS=["Basis","Gevorderd","Expert"];
 const CATS=[...new Set(PROMPTS.map(p=>p.cat))];
+const ROLS=["Iedereen","MT, teamleads & adviseurs","Administratie & secretariaat","Vakinhoud & rapportage"];
 
-let state={zoek:"",app:new Set(),niv:new Set(),cat:new Set(),fav:false};
+let state={zoek:"",rol:new Set(),app:new Set(),niv:new Set(),cat:new Set(),fav:false};
 let favs=new Set();
 try{const raw=localStorage.getItem('odnhn-prompt-favs');if(raw)favs=new Set(JSON.parse(raw));}catch(e){}
 function bewaarFavs(){try{localStorage.setItem('odnhn-prompt-favs',JSON.stringify([...favs]));}catch(e){}}
@@ -743,6 +935,7 @@ function maakChips(containerId,waarden,key){
     c.appendChild(b);
   });
 }
+maakChips('rolChips',ROLS,'rol');
 maakChips('appChips',APPS,'app');
 maakChips('nivChips',NIVS,'niv');
 maakChips('catChips',CATS,'cat');
@@ -751,19 +944,20 @@ document.getElementById('zoek').addEventListener('input',e=>{state.zoek=e.target
 const favBtn=document.getElementById('favFilter');
 favBtn.addEventListener('click',()=>{state.fav=!state.fav;favBtn.setAttribute('aria-pressed',String(state.fav));render();});
 document.getElementById('reset').addEventListener('click',()=>{
-  state={zoek:"",app:new Set(),niv:new Set(),cat:new Set(),fav:false};
+  state={zoek:"",rol:new Set(),app:new Set(),niv:new Set(),cat:new Set(),fav:false};
   document.getElementById('zoek').value="";
   document.querySelectorAll('button.chip').forEach(b=>b.setAttribute('aria-pressed','false'));
   render();
 });
 
 function past(p,i){
+  if(state.rol.size&&!(state.rol.has(p.rol)||p.rol==='Iedereen'))return false;
   if(state.app.size&&!state.app.has(p.app))return false;
   if(state.niv.size&&!state.niv.has(p.niv))return false;
   if(state.cat.size&&!state.cat.has(p.cat))return false;
   if(state.fav&&!favs.has(i))return false;
   if(state.zoek){
-    const hooi=(p.t+' '+p.app+' '+p.niv+' '+p.cat+' '+p.doel+' '+p.p+' '+p.c).toLowerCase();
+    const hooi=(p.t+' '+p.app+' '+p.niv+' '+p.cat+' '+p.rol+' '+p.doel+' '+p.p+' '+p.c).toLowerCase();
     if(!hooi.includes(state.zoek))return false;
   }
   return true;
@@ -783,6 +977,7 @@ function render(){
     bd.innerHTML='<span class="badge app">'+p.app+'</span>'+
                  '<span class="badge niv">'+p.niv+'</span>'+
                  '<span class="badge">'+p.cat+'</span>'+
+                 (p.rol&&p.rol!=='Iedereen'?'<span class="badge rol">'+p.rol+'</span>':'')+
                  (p.lic?'<span class="badge lic">M365-licentie</span>':'');
     const h=document.createElement('h3');h.textContent=p.t;
     const d=document.createElement('p');d.className='doel';d.textContent=p.doel;
